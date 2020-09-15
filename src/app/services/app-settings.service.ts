@@ -27,8 +27,8 @@ export class AppSettingsService {
   storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
-    displayDenomination: 'mnano',
-    // displayPrefix: 'xrb',
+    displayDenomination: 'mbadem',
+    // displayPrefix: 'bdm',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     defaultRepresentative: null,
@@ -54,44 +54,12 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'VoxPopuli',
-      value: 'voxpopuli',
-      api: 'https://voxpopuli.network/api',
-      ws: 'wss://voxpopuli.network/websocket',
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
+      name: 'Badem RPC',
+      value: 'badem',
+      api: 'https://rpc.badem.io/rpc',
       ws: null,
       auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
+      shouldRandom: true,
     },
     {
       name: 'Custom',
@@ -176,8 +144,8 @@ export class AppSettingsService {
   clearAppSettings() {
     localStorage.removeItem(this.storeKey);
     this.settings = {
-      displayDenomination: 'mnano',
-      // displayPrefix: 'xrb',
+      displayDenomination: 'mbadem',
+      // displayPrefix: 'bdm',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       defaultRepresentative: null,

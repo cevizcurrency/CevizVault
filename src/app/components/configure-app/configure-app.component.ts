@@ -41,9 +41,9 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'NANO', value: 'mnano' },
-    { name: 'knano', value: 'knano' },
-    { name: 'nano', value: 'nano' },
+    { name: 'BADEM', value: 'mbadem' },
+    { name: 'kbadem', value: 'kbadem' },
+    { name: 'bdm', value: 'bdm' },
   ];
   selectedDenomination = this.denominations[0].value;
 
@@ -118,8 +118,8 @@ export class ConfigureAppComponent implements OnInit {
   selectedPendingOption = this.pendingOptions[0].value;
 
   // prefixOptions = [
-  //   { name: 'xrb_', value: 'xrb' },
-  //   { name: 'nano_', value: 'nano' },
+  //   { name: 'bdm_', value: 'bdm' },
+  //   { name: 'bdm_', value: 'bdm' },
   // ];
   // selectedPrefix = this.prefixOptions[0].value;
 
@@ -195,8 +195,8 @@ export class ConfigureAppComponent implements OnInit {
 
     try {
       const quorumData = await this.api.confirmationQuorum();
-      this.peersStakeReq = quorumData ? Number(this.util.nano.rawToMnano(quorumData.peers_stake_required)).toLocaleString('en-US') : null;
-      this.peersStakeTotal = quorumData ? Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US') : null;
+      this.peersStakeReq = quorumData ? Number(this.util.badem.rawToMbadem(quorumData.peers_stake_required)).toLocaleString('en-US') : null;
+      this.peersStakeTotal = quorumData ? Number(this.util.badem.rawToMbadem(quorumData.peers_stake_total)).toLocaleString('en-US') : null;
     } catch {console.warn('Failed to get node stats: confirmation quorum'); }
 
     try {
@@ -274,7 +274,7 @@ export class ConfigureAppComponent implements OnInit {
     let newPoW = this.selectedPoWOption;
     const pendingOption = this.selectedPendingOption;
     let minReceive = null;
-    if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
+    if (this.util.account.isValidBademAmount(this.minimumReceive)) {
       minReceive = this.minimumReceive;
     }
 

@@ -11,15 +11,12 @@ import {BehaviorSubject} from 'rxjs';
 const nacl = window['nacl'];
 
 @Injectable()
-export class NanoBlockService {
+export class BademBlockService {
   representativeAccounts = [
-    'nano_1center16ci77qw5w69ww8sy4i4bfmgfhr81ydzpurm91cauj11jn6y3uc5y', // The Nano Center
-    'nano_1x7biz69cem95oo7gxkrw6kzhfywq4x5dupw4z1bdzkb74dk9kpxwzjbdhhs', // NanoCrawler
-    'nano_1thingspmippfngcrtk1ofd3uwftffnu4qu9xkauo9zkiuep6iknzci3jxa6', // NanoThings
-    'nano_3rpixaxmgdws7nk7sx6owp8d8becj9ei5nef6qiwokgycsy9ufytjwgj6eg9', // repnode.org
-    'nano_3chartsi6ja8ay1qq9xg3xegqnbg1qx76nouw6jedyb8wx3r4wu94rxap7hg', // Nano Charts
-    'nano_1ninja7rh37ehfp9utkor5ixmxyg8kme8fnzc4zty145ibch8kf5jwpnzr3r', // My Nano Ninja
-    'nano_1iuz18n4g4wfp9gf7p1s8qkygxw7wx9qfjq6a9aq68uyrdnningdcjontgar', // NanoTicker / Json
+    'bdm_18tonkzx77watkfesbt633smd3t6of77hy7fbbwabnh64h9ect9k889s9ice', // Representative 1
+    'bdm_38regm4qcthdwm9w5urp7o6cy6tj5cp14ekjhoptocp74nxinsd9bdhe3adu', // Representative 2
+    'bdm_3uuw7nzrnbp5d86ze4pefky1efq736kr94dbt4bnfszpwrxs7c7rezwqystt', // Representative 3
+    'bdm_14mmatdj4rhqukt9ityymbaqdkiz5smww7uinkt4hw1rzknqepi496hr4zdf', // Representative 4
   ];
 
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -401,14 +398,14 @@ export class NanoBlockService {
     if (blockData.contents.type !== 'state') {
       throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`);
     }
-    if (this.util.hex.fromUint8(this.util.nano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
+    if (this.util.hex.fromUint8(this.util.badem.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
       throw new Error(`Frontier hash didn't match block data`);
     }
   }
 
   // Sign a state block, and insert the signature into the block.
   signStateBlock(walletAccount, blockData) {
-    const hashBytes = this.util.nano.hashStateBlock(blockData);
+    const hashBytes = this.util.badem.hashStateBlock(blockData);
     const privKey = walletAccount.keyPair.secretKey;
     const signed = nacl.sign.detached(hashBytes, privKey, walletAccount.keyPair.expanded);
     blockData.signature = this.util.hex.fromUint8(signed);

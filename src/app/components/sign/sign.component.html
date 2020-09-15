@@ -1,7 +1,7 @@
 <div uk-grid>
   <div class="uk-width-1-1">
-    <h2 *ngIf="shouldSign">Sign Nano Block</h2>
-    <h2 *ngIf="!shouldSign">Process Nano Block</h2>
+    <h2 *ngIf="shouldSign">Sign Badem Block</h2>
+    <h2 *ngIf="!shouldSign">Process Badem Block</h2>
 
     <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
@@ -11,7 +11,7 @@
           <span *ngIf="qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
           <span *ngIf="!blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You are about to {{txTypeMessage}}</span>
           <span *ngIf="blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You have processed a block to {{txTypeMessage}}</span>
-          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | bdm: 'mbadem' }}</span>
           <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
         </div>
         <br>
@@ -38,11 +38,11 @@
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano'): 'N/A'}}</span>
+                    <span class="confirm-currency">{{ fromAccountBalance ? (fromAccountBalance | bdm: 'mbadem'): 'N/A'}}</span>
                     <span class="confirm-subtitle">Balance when block was created</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency uk-text-danger">-{{ rawAmount | rai: 'mnano' }}</span>
+                    <span class="confirm-currency uk-text-danger">-{{ rawAmount | bdm: 'mbadem' }}</span>
                   </div>
                 </div>
               </div>
@@ -72,11 +72,11 @@
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ toAccountBalance ? (toAccountBalance | rai: 'mnano'): 'N/A' }}</span>
+                    <span class="confirm-currency">{{ toAccountBalance ? (toAccountBalance | bdm: 'mbadem'): 'N/A' }}</span>
                     <span class="confirm-subtitle">Balance when block was created</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency uk-text-success">+{{ rawAmount | rai: 'mnano' }}</span>
+                    <span class="confirm-currency uk-text-success">+{{ rawAmount | bdm: 'mbadem' }}</span>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@
                   <div class="uk-form-controls">
                     <div class="uk-inline uk-width-1-1" style="height: 40px;">
                       <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','generic')" uk-tooltip title="Scan from QR code"></a>
-                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, BIP39 seed or 24-word mnemonic" autocomplete="off">
+                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Badem seed, BIP39 seed or 24-word mnemonic" autocomplete="off">
                     </div>
                   </div>
                 </div>
