@@ -216,7 +216,7 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
-    if (searchData.startsWith('bdm_') {
+    if (searchData.startsWith('bdm_')) {
       this.router.navigate(['account', searchData]);
     } else if (searchData.length === 64) {
       this.router.navigate(['transaction', searchData]);
