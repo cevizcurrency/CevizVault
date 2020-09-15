@@ -279,7 +279,8 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'bdm') {
 }
 
 function isValidAccount(account: string): boolean {
-  return nanocurrency.checkAddress(account);
+  const re = /^bdm_[13][0-13-9a-km-uw-z]{59}$/;
+  return re.test(account);
 }
 
 // Check if a string is a numeric and larger than 0 but less than Badem supply
