@@ -48,7 +48,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
     switch (unit) {
       case 'mbadem':
         if (this.util.account.isValidBademAmount(this.Mbadem)) {
-          this.raw = nanocurrency.convert(this.Mbadem, {from: nanocurrency.Unit.BADEM, to: nanocurrency.Unit.raw});
+          this.raw = nanocurrency.convert(this.Mbadem, {from: nanocurrency.Unit.NANO, to: nanocurrency.Unit.raw});
           this.fiatPrice = (new BigNumber(this.Mbadem)).times(this.price.price.lastPrice).toString(10);
           this.invalidMbadem = false;
           this.invalidRaw = false;
@@ -61,7 +61,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
         break;
       case 'raw':
         if (this.util.account.isValidAmount(this.raw)) {
-          this.Mbadem = nanocurrency.convert(this.raw, {from: nanocurrency.Unit.raw, to: nanocurrency.Unit.BADEM});
+          this.Mbadem = nanocurrency.convert(this.raw, {from: nanocurrency.Unit.raw, to: nanocurrency.Unit.NANO});
           this.fiatPrice = (new BigNumber(this.Mbadem)).times(this.price.price.lastPrice).toString(10);
           this.invalidRaw = false;
           this.invalidMbadem = false;
@@ -75,7 +75,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
       case 'fiat':
         if (this.util.string.isNumeric(this.fiatPrice)) {
           this.Mbadem = (new BigNumber(this.fiatPrice)).dividedBy(this.price.price.lastPrice).toString(10);
-          this.raw = nanocurrency.convert(this.Mbadem, {from: nanocurrency.Unit.BADEM, to: nanocurrency.Unit.raw});
+          this.raw = nanocurrency.convert(this.Mbadem, {from: nanocurrency.Unit.NANO, to: nanocurrency.Unit.raw});
           this.invalidRaw = false;
           this.invalidMbadem = false;
           this.invalidFiat = false;

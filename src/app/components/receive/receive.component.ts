@@ -40,7 +40,7 @@ export class ReceiveComponent implements OnInit {
     private api: ApiService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private util: UtilService) { }
 
   async ngOnInit() {

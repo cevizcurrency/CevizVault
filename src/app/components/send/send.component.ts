@@ -58,7 +58,7 @@ export class SendComponent implements OnInit {
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
     private nodeApi: ApiService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     public price: PriceService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,

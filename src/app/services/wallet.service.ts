@@ -118,7 +118,7 @@ export class WalletService {
     private price: PriceService,
     private workPool: WorkPoolService,
     private websocket: WebsocketService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private ledgerService: LedgerService,
     private notifications: NotificationService) {
     this.websocket.newTransactions$.subscribe(async (transaction) => {

@@ -70,7 +70,7 @@ export class QrModalComponent implements OnInit {
     } else if (this.util.badem.isValidHash(resultString)) {
       type = 'hash';
       content = resultString;
-    } else if (this.badem_scheme.test(resultString)) {
+    } else if (this.bdm_scheme.test(resultString)) {
       // This is a valid Badem scheme URI
       const url = new URL(resultString);
       content = url.pathname;

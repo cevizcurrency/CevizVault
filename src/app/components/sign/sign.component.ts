@@ -81,7 +81,7 @@ export class SignComponent implements OnInit {
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private api: ApiService,

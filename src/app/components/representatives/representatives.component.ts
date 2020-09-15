@@ -55,7 +55,7 @@ export class RepresentativesComponent implements OnInit {
     public wallet: WalletService,
     private api: ApiService,
     private notifications: NotificationService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private util: UtilService,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,

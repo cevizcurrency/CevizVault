@@ -264,7 +264,7 @@ export class LedgerService {
       // Load nano object
       if (!this.ledger.badem) {
         try {
-          this.ledger.badem = new Badem(this.ledger.transport);
+          this.ledger.badem = new Nano(this.ledger.transport);
         } catch (err) {
           console.log(`Badem error: `, err);
           if (err.statusText === 'UNKNOWN_ERROR') {

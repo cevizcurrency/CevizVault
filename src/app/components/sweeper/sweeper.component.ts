@@ -66,7 +66,7 @@ export class SweeperComponent implements OnInit {
     private api: ApiService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private util: UtilService,
     private route: Router) {
       if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
@@ -249,7 +249,7 @@ export class SweeperComponent implements OnInit {
   // Process final send block
   async processSend(privKey, previous, sendCallback) {
     const pubKey = nanocurrency.derivePublicKey(privKey);
-    const address = nanocurrency.deriveAddress(pubKey, {useBademPrefix: true});
+    const address = nanocurrency.deriveAddress(pubKey, {useNanoPrefix: false});
 
     // make an extra check on valid destination
     if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
@@ -410,7 +410,7 @@ export class SweeperComponent implements OnInit {
     }
 
     this.pubKey = nanocurrency.derivePublicKey(privKey);
-    const address = nanocurrency.deriveAddress(this.pubKey, {useBademPrefix: true});
+    const address = nanocurrency.deriveAddress(this.pubKey, {useNanoPrefix: false});
 
     // get account info required to build the block
     let balance = 0; // balance will be 0 if open block

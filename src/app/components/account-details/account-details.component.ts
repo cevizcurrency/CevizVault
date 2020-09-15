@@ -97,7 +97,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private wallet: WalletService,
     private util: UtilService,
     public settings: AppSettingsService,
-    private nanoBlock: BademBlockService,
+    private bademBlock: BademBlockService,
     private qrModalService: QrModalService,
     private ninja: NinjaService) {
       // to detect when the account changes if the view is already active
