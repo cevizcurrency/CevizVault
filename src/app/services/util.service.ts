@@ -338,8 +338,8 @@ function mbademToRaw(value) {
 function kbademToRaw(value) {
   return new BigNumber(value).times(kbadem);
 }
-function nanoToRaw(value) {
-  return new BigNumber(value).times(nano);
+function bademToRaw(value) {
+  return new BigNumber(value).times(badem);
 }
 function rawToMbadem(value) {
   return new BigNumber(value).div(mbadem);
@@ -348,7 +348,7 @@ function rawToKbadem(value) {
   return new BigNumber(value).div(kbadem);
 }
 function rawToBadem(value) {
-  return new BigNumber(value).div(nano);
+  return new BigNumber(value).div(badem);
 }
 
 /**
@@ -486,7 +486,7 @@ const util = {
   badem: {
     mbademToRaw: mbademToRaw,
     kbademToRaw: kbademToRaw,
-    nanoToRaw: nanoToRaw,
+    bademToRaw: bademToRaw,
     rawToMbadem: rawToMbadem,
     rawToKbadem: rawToKbadem,
     rawToBadem: rawToBadem,
