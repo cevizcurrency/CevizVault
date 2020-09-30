@@ -56,7 +56,7 @@ export class AppSettingsService {
     {
       name: 'Badem RPC',
       value: 'badem',
-      api: 'https://rpc.badem.io/rpc',
+      api: 'https://rpc.badem.io/proxy',
       ws: null,
       auth: null,
       shouldRandom: true,
