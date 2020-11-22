@@ -2,7 +2,7 @@
   "name": "nault",
   "version": "1.7.9",
   "license": "MIT",
-  "description": "Wallet for interacting with Badem",
+  "description": "Wallet for interacting with Ceviz",
   "author": "The Nano Community / Andrew Steele",
   "main": "desktop-app/dist/desktop-app.js",
   "scripts": {
@@ -109,9 +109,9 @@
       "extendInfo": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLName": "badem",
+            "CFBundleURLName": "ceviz",
             "CFBundleURLSchemes": [
-              "badem"
+              "ceviz"
             ]
           }
         ]
@@ -128,9 +128,9 @@
       }
     ],
     "protocols": {
-      "name": "badem",
+      "name": "ceviz",
       "schemes": [
-        "badem"
+        "ceviz"
       ],
       "role": "Viewer"
     }

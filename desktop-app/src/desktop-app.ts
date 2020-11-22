@@ -6,7 +6,7 @@ import * as url from 'url';
 import * as path from 'path';
 import { initialize } from './lib/ledger';
 
-app.setAsDefaultProtocolClient('bdm'); // Register handler for badem: links
+app.setAsDefaultProtocolClient('ceviz'); // Register handler for ceviz: links
 
 // Initialize Ledger device detection
 initialize();
@@ -63,7 +63,7 @@ app.on('ready', () => {
   // Once the app is ready, launch the wallet window
   createWindow();
 
-  // Detect when the application has been loaded using an badem: link, send it to the wallet to load
+  // Detect when the application has been loaded using an ceviz: link, send it to the wallet to load
   app.on('open-url', (event, eventpath) => {
     if (!mainWindow) {
       createWindow();

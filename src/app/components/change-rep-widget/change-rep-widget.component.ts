@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
-import {BademBlockService} from '../../services/nano-block.service';
+import {CevizBlockService} from '../../services/nano-block.service';
 import {RepresentativeService} from '../../services/representative.service';
 import {Router} from '@angular/router';
 
@@ -22,7 +22,7 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
-    private blockService: BademBlockService,
+    private blockService: CevizBlockService,
     private repService: RepresentativeService,
     private router: Router
     ) { }

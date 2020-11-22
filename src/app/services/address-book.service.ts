@@ -37,8 +37,8 @@ export class AddressBookService {
     const addressBook = JSON.parse(addressBookStore);
 
     const newAddressBook = addressBook.map(entry => {
-      if (entry.account.indexOf('bdm_') !== -1) {
-        entry.account = entry.account.replace('bdm_', 'bdm_');
+      if (entry.account.indexOf('ceviz_') !== -1) {
+        entry.account = entry.account.replace('ceviz_', 'ceviz_');
       }
       return entry;
     });

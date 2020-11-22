@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
 
   wallet = this.walletService.wallet;
   node = this.nodeService.node;
-  bademPrice = this.price.price;
+  cevizPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   windowHeight = 1000;
@@ -66,8 +66,8 @@ export class AppComponent implements OnInit {
     this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
 
-    // New for v19: Patch saved bdm_ prefixes to bdm_
-    await this.patchXrbToBademPrefixData();
+    // New for v19: Patch saved ceviz_ prefixes to ceviz_
+    await this.patchXrbToCevizPrefixData();
 
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
@@ -139,11 +139,11 @@ export class AppComponent implements OnInit {
       this.walletService.lockWallet();
     });
 
-    // Listen for an bdm: protocol link, triggered by the desktop application
+    // Listen for an ceviz: protocol link, triggered by the desktop application
     window.addEventListener('protocol-load', (e: CustomEvent) => {
       const protocolText = e.detail;
-      const stripped = protocolText.split('').splice(4).join(''); // Remove bdm:
-      if (stripped.startsWith('bdm_')) {
+      const stripped = protocolText.split('').splice(4).join(''); // Remove ceviz:
+      if (stripped.startsWith('ceviz_')) {
         this.router.navigate(['account', stripped]);
       }
       // Soon: Load seed, automatic send page?
@@ -166,19 +166,19 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(`There was an issue retrieving latest Badem price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+      this.notifications.sendWarning(`There was an issue retrieving latest Ceviz price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
   }
 
   /*
-    This is important as it looks through saved data using hardcoded bdm_ prefixes
-    (Your wallet, address book, rep list, etc) and updates them to bdm_ prefix for v19 RPC
+    This is important as it looks through saved data using hardcoded ceviz_ prefixes
+    (Your wallet, address book, rep list, etc) and updates them to ceviz_ prefix for v19 RPC
    */
-  async patchXrbToBademPrefixData() {
+  async patchXrbToCevizPrefixData() {
     // If wallet is version 2, data has already been patched.  Otherwise, patch all data
     if (this.settings.settings.walletVersion >= 2) return;
 
-    await this.walletService.patchOldSavedData(); // Change saved bdm_ addresses to bdm_
+    await this.walletService.patchOldSavedData(); // Change saved ceviz_ addresses to ceviz_
     this.addressBook.patchXrbPrefixData();
     this.representative.patchXrbPrefixData();
 
@@ -216,12 +216,12 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
-    if (searchData.startsWith('bdm_')) {
+    if (searchData.startsWith('ceviz_')) {
       this.router.navigate(['account', searchData]);
     } else if (searchData.length === 64) {
       this.router.navigate(['transaction', searchData]);
     } else {
-      this.notifications.sendWarning(`Invalid Badem account or transaction hash!`);
+      this.notifications.sendWarning(`Invalid Ceviz account or transaction hash!`);
     }
     this.searchData = '';
   }
@@ -236,7 +236,7 @@ export class AppComponent implements OnInit {
       return;
     }
     this.walletService.reloadBalances(true);
-    this.notifications.sendInfo(`Attempting to reconnect to Badem node`);
+    this.notifications.sendInfo(`Attempting to reconnect to Ceviz node`);
   }
 
   async updateFiatPrices() {

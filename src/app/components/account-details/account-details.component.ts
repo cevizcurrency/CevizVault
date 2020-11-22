@@ -4,7 +4,7 @@ import {AddressBookService} from '../../services/address-book.service';
 import {ApiService} from '../../services/api.service';
 import {NotificationService} from '../../services/notification.service';
 import {WalletService} from '../../services/wallet.service';
-import {BademBlockService} from '../../services/nano-block.service';
+import {CevizBlockService} from '../../services/nano-block.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {PriceService} from '../../services/price.service';
 import {UtilService} from '../../services/util.service';
@@ -22,7 +22,7 @@ import { QrModalService } from '../../services/qr-modal.service';
   styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
-  badem = 100;
+  ceviz = 100;
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
   accountHistory: any[] = [];
@@ -58,9 +58,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   showAddressBook = false;
   addressBookMatch = '';
   amounts = [
-    { name: 'BADEM', shortName: 'BADEM', value: 'mbadem' },
-    { name: 'kbadem', shortName: 'kbadem', value: 'kbadem' },
-    { name: 'bdm', shortName: 'bdm', value: 'bdm' },
+    { name: 'CEVIZ', shortName: 'CEVIZ', value: 'mceviz' },
+    { name: 'kceviz', shortName: 'kceviz', value: 'kceviz' },
+    { name: 'ceviz', shortName: 'ceviz', value: 'ceviz' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -81,7 +81,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   blockHash = null;
   blockHashReceive = null;
   remoteVisible = false;
-  blockTypes: string[] = ['Send Badem', 'Change Representative'];
+  blockTypes: string[] = ['Send Ceviz', 'Change Representative'];
   blockTypeSelected: string = this.blockTypes[0];
   representativeList = [];
   // End remote signing
@@ -97,7 +97,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private wallet: WalletService,
     private util: UtilService,
     public settings: AppSettingsService,
-    private bademBlock: BademBlockService,
+    private cevizBlock: CevizBlockService,
     private qrModalService: QrModalService,
     private ninja: NinjaService) {
       // to detect when the account changes if the view is already active
@@ -120,8 +120,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.priceSub = this.price.lastPrice$.subscribe(event => {
-      this.account.balanceFiat = this.util.badem.rawToMbadem(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
-      this.account.pendingFiat = this.util.badem.rawToMbadem(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
+      this.account.balanceFiat = this.util.ceviz.rawToMceviz(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+      this.account.pendingFiat = this.util.ceviz.rawToMceviz(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     });
 
     await this.loadAccountDetails();
@@ -188,7 +188,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // Take minimum receive into account
       let pending;
       if (this.settings.settings.minimumReceive) {
-        const minAmount = this.util.badem.mbademToRaw(this.settings.settings.minimumReceive);
+        const minAmount = this.util.ceviz.mcevizToRaw(this.settings.settings.minimumReceive);
         pending = await this.api.pendingLimit(this.accountID, 50, minAmount.toString(10));
         this.account.pending = '0';
       } else {
@@ -224,10 +224,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     // Set fiat values?
-    this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.badem);
-    this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.badem);
-    this.account.balanceFiat = this.util.badem.rawToMbadem(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
-    this.account.pendingFiat = this.util.badem.rawToMbadem(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
+    this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.ceviz);
+    this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.ceviz);
+    this.account.balanceFiat = this.util.ceviz.rawToMceviz(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+    this.account.pendingFiat = this.util.ceviz.rawToMceviz(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     await this.getAccountHistory(this.accountID);
 
 
@@ -308,7 +308,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!valid) return this.notifications.sendWarning(`Account ID is not a valid account`);
 
     try {
-      const changed = await this.bademBlock.generateChange(this.walletAccount, repAccount, this.wallet.isLedgerWallet());
+      const changed = await this.cevizBlock.generateChange(this.walletAccount, repAccount, this.wallet.isLedgerWallet());
       if (!changed) {
         this.notifications.sendError(`Error changing representative, please try again`);
         return;
@@ -404,7 +404,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   // Remote signing methods
-  // An update to the Badem amount, sync the fiat value
+  // An update to the Ceviz amount, sync the fiat value
   syncFiatPrice() {
     if (!this.validateAmount()) return;
     const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
@@ -417,7 +417,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.badem.rawToMbadem(rawAmount)
+    const fiatAmount = this.util.ceviz.rawToMceviz(rawAmount)
     .times(this.price.price.lastPrice)
     .times(precision)
     .floor().div(precision).toNumber();
@@ -426,17 +426,17 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   // An update to the fiat amount, sync the nano value based on currently selected denomination
-  syncBademPrice() {
+  syncCevizPrice() {
     if (!this.amountFiat) {
       this.amount = '';
       return;
     }
     if (!this.util.string.isNumeric(this.amountFiat)) return;
-    const rawAmount = this.util.badem.mbademToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const bademVal = this.util.badem.rawToBadem(rawAmount).floor();
-    const bademAmount = this.getAmountValueFromBase(this.util.badem.bademToRaw(bademVal));
+    const rawAmount = this.util.ceviz.mcevizToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
+    const cevizVal = this.util.ceviz.rawToCeviz(rawAmount).floor();
+    const cevizAmount = this.getAmountValueFromBase(this.util.ceviz.cevizToRaw(cevizVal));
 
-    this.amount = bademAmount.toNumber();
+    this.amount = cevizAmount.toNumber();
   }
 
   searchAddressBook() {
@@ -485,7 +485,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   validateAmount() {
-    if (this.util.account.isValidBademAmount(this.amount)) {
+    if (this.util.account.isValidCevizAmount(this.amount)) {
       this.amountStatus = 1;
       return true;
     } else {
@@ -495,9 +495,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   setMaxAmount() {
-    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.badem) : new BigNumber(0);
-    const bademVal = this.util.badem.rawToBadem(this.account.balance).floor();
-    const maxAmount = this.getAmountValueFromBase(this.util.badem.bademToRaw(bademVal));
+    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.ceviz) : new BigNumber(0);
+    const cevizVal = this.util.ceviz.rawToCeviz(this.account.balance).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.ceviz.cevizToRaw(cevizVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
   }
@@ -506,18 +506,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     switch (this.selectedAmount.value) {
       default:
-      case 'bdm': return this.util.badem.bademToRaw(value);
-      case 'kbadem': return this.util.badem.kbademToRaw(value);
-      case 'mbadem': return this.util.badem.mbademToRaw(value);
+      case 'ceviz': return this.util.ceviz.cevizToRaw(value);
+      case 'kceviz': return this.util.ceviz.kcevizToRaw(value);
+      case 'mceviz': return this.util.ceviz.mcevizToRaw(value);
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-      case 'bdm': return this.util.badem.rawToBadem(value);
-      case 'kbadem': return this.util.badem.rawToKbadem(value);
-      case 'mbadem': return this.util.badem.rawToMbadem(value);
+      case 'ceviz': return this.util.ceviz.rawToCeviz(value);
+      case 'kceviz': return this.util.ceviz.rawToKceviz(value);
+      case 'mceviz': return this.util.ceviz.rawToMceviz(value);
     }
   }
 
@@ -525,7 +525,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
     if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
-    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid BADEM Amount`);
+    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid CEVİZ Amount`);
 
     this.qrCodeImageBlock = null;
 
@@ -542,24 +542,24 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
     this.rawAmount = rawAmount.plus(this.amountRaw);
 
-    const bademAmount = this.rawAmount.div(this.badem);
+    const cevizAmount = this.rawAmount.div(this.ceviz);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough BADEM`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough CEVİZ`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
-    this.amountRaw = this.rawAmount.mod(this.badem);
+    this.amountRaw = this.rawAmount.mod(this.ceviz);
 
     // Determine fiat value of the amount
-    this.amountFiat = this.util.badem.rawToMbadem(rawAmount).times(this.price.price.lastPrice).toNumber();
+    this.amountFiat = this.util.ceviz.rawToMceviz(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     const remaining = new BigNumber(from.balance).minus(this.rawAmount);
     const remainingDecimal = remaining.toString(10);
 
-    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.bademBlock.getRandomRepresentative();
+    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.cevizBlock.getRandomRepresentative();
     const representative = from.representative || defaultRepresentative;
     const blockData = {
-      account: this.accountID.replace('bdm_', 'bdm_').toLowerCase(),
+      account: this.accountID.replace('ceviz_', 'ceviz_').toLowerCase(),
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
@@ -580,7 +580,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
-      account: jsonBlock.account.replace('bdm_', 'bdm_').toLowerCase(),
+      account: jsonBlock.account.replace('ceviz_', 'ceviz_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -588,8 +588,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       signature: jsonBlock.signature,
     };
 
-    // Badem signing standard
-    this.qrString = 'bademsign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    // Ceviz signing standard
+    this.qrString = 'cevizsign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
   }
@@ -608,7 +608,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const openEquiv = !toAcct || !toAcct.frontier; // if open block
 
     const previousBlock = toAcct.frontier || this.zeroHash; // set to zeroes if open block
-    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.bademBlock.getRandomRepresentative();
+    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.cevizBlock.getRandomRepresentative();
     const representative = toAcct.representative || defaultRepresentative;
 
     const srcBlockInfo = await this.api.blocksInfo([pendingHash]);
@@ -617,7 +617,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const newBalanceDecimal = newBalance.toString(10);
 
     const blockData = {
-      account: this.accountID.replace('bdm_', 'bdm_').toLowerCase(),
+      account: this.accountID.replace('ceviz_', 'ceviz_').toLowerCase(),
       previous: previousBlock,
       representative: representative,
       balance: newBalanceDecimal,
@@ -641,7 +641,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
       const jsonBlock = JSON.parse(previousBlockInfo.contents);
       blockDataPrevious = {
-        account: jsonBlock.account.replace('bdm_', 'bdm_').toLowerCase(),
+        account: jsonBlock.account.replace('ceviz_', 'ceviz_').toLowerCase(),
         previous: jsonBlock.previous,
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
@@ -662,8 +662,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       };
     }
 
-    // Badem signing standard
-    this.qrString = 'bademsign:' + JSON.stringify(qrData);
+    // Ceviz signing standard
+    this.qrString = 'cevizsign:' + JSON.stringify(qrData);
 
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlockReceive = qrCode;
@@ -682,7 +682,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const balance = new BigNumber(account.balance);
     const balanceDecimal = balance.toString(10);
     const blockData = {
-      account: this.accountID.replace('bdm_', 'bdm_').toLowerCase(),
+      account: this.accountID.replace('ceviz_', 'ceviz_').toLowerCase(),
       previous: account.frontier,
       representative: this.representativeModel,
       balance: balanceDecimal,
@@ -705,7 +705,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
-      account: jsonBlock.account.replace('bdm_', 'bdm_').toLowerCase(),
+      account: jsonBlock.account.replace('ceviz_', 'ceviz_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -713,8 +713,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       signature: jsonBlock.signature,
     };
 
-    // Badem signing standard
-    this.qrString = 'bademsign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    // Ceviz signing standard
+    this.qrString = 'cevizsign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
   }

@@ -20,7 +20,7 @@ export class QrModalComponent implements OnInit {
   @Input() type: QRType;
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo = null;
-  bdm_scheme = /^(bdm|badem|bademrep|bademseed|bademkey):.+$/g;
+  ceviz_scheme = /^(ceviz|cevizrep|cevizseed|cevizkey):.+$/g;
 
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
@@ -63,21 +63,21 @@ export class QrModalComponent implements OnInit {
     } else if (resultString.length === 128) {
       // includes deterministic R value material which we ignore
       resultString = resultString.substring(0, 64);
-      if (this.util.badem.isValidHash(resultString)) {
+      if (this.util.ceviz.isValidHash(resultString)) {
         type = 'hash';
         content = resultString;
       }
-    } else if (this.util.badem.isValidHash(resultString)) {
+    } else if (this.util.ceviz.isValidHash(resultString)) {
       type = 'hash';
       content = resultString;
-    } else if (this.bdm_scheme.test(resultString)) {
-      // This is a valid Badem scheme URI
+    } else if (this.ceviz_scheme.test(resultString)) {
+      // This is a valid Ceviz scheme URI
       const url = new URL(resultString);
       content = url.pathname;
 
-      if (['badem:', 'bademrep:', 'bdm:'].includes(url.protocol) && this.util.account.isValidAccount(url.pathname)) {
+      if (['ceviz:', 'cevizrep:', 'ceviz:'].includes(url.protocol) && this.util.account.isValidAccount(url.pathname)) {
         type = 'account';
-      } else if (['bademseed:', 'bademkey:'].includes(url.protocol) && this.util.badem.isValidHash(url.pathname)) {
+      } else if (['cevizseed:', 'cevizkey:'].includes(url.protocol) && this.util.ceviz.isValidHash(url.pathname)) {
         type = 'hash';
       }
     } else {

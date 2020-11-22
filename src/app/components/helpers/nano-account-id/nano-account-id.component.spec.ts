@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BademAccountIdComponent } from './nano-account-id.component';
+import { CevizAccountIdComponent } from './nano-account-id.component';
 
-describe('BademAccountIdComponent', () => {
-  let component: BademAccountIdComponent;
-  let fixture: ComponentFixture<BademAccountIdComponent>;
+describe('CevizAccountIdComponent', () => {
+  let component: CevizAccountIdComponent;
+  let fixture: ComponentFixture<CevizAccountIdComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BademAccountIdComponent ]
+      declarations: [ CevizAccountIdComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BademAccountIdComponent);
+    fixture = TestBed.createComponent(CevizAccountIdComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

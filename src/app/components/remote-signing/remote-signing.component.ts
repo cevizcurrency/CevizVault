@@ -42,7 +42,7 @@ export class RemoteSigningComponent implements OnInit {
 
   validateUnsigned(string) {
     let url = null;
-    if (string.startsWith('bademsign:')) {
+    if (string.startsWith('cevizsign:')) {
       url = new URL(string);
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname)) {
@@ -54,7 +54,7 @@ export class RemoteSigningComponent implements OnInit {
 
   validateSigned(string) {
     let url = null;
-    if (string.startsWith('bademprocess:')) {
+    if (string.startsWith('cevizprocess:')) {
       url = new URL(string);
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname) && this.remoteSignService.checkProcessBlock(url.pathname)) {
@@ -75,11 +75,11 @@ export class RemoteSigningComponent implements OnInit {
   navigateBlock(block) {
     let badScheme = false;
 
-    if (block.startsWith('bademsign:') || block.startsWith('bademprocess:')) {
+    if (block.startsWith('cevizsign:') || block.startsWith('cevizprocess:')) {
       const url = new URL(block);
-      if (url.protocol === 'bademsign:') {
+      if (url.protocol === 'cevizsign:') {
         this.remoteSignService.navigateSignBlock(url);
-      } else if (url.protocol === 'bademprocess:') {
+      } else if (url.protocol === 'cevizprocess:') {
         this.remoteSignService.navigateProcessBlock(url);
       } else {
         badScheme = true;

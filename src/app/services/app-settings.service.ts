@@ -27,8 +27,8 @@ export class AppSettingsService {
   storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
-    displayDenomination: 'mbadem',
-    // displayPrefix: 'bdm',
+    displayDenomination: 'mceviz',
+    // displayPrefix: 'ceviz',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     defaultRepresentative: null,
@@ -54,10 +54,10 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'Badem RPC',
-      value: 'badem',
-      api: 'https://rpc.badem.io/proxy',
-      ws: 'wss://ws.badem.io',
+      name: 'Ceviz RPC',
+      value: 'ceviz',
+      api: 'https://ceviz-api.badem.io/proxy',
+      ws: 'wss://ceviz-ws.badem.io',
       auth: null,
       shouldRandom: true,
     },
@@ -144,8 +144,8 @@ export class AppSettingsService {
   clearAppSettings() {
     localStorage.removeItem(this.storeKey);
     this.settings = {
-      displayDenomination: 'mbadem',
-      // displayPrefix: 'bdm',
+      displayDenomination: 'mceviz',
+      // displayPrefix: 'ceviz',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       defaultRepresentative: null,

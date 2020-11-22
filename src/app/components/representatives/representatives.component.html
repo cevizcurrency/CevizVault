@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    
+
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider">Representatives Overview</h2>
@@ -45,7 +45,7 @@
                     <span *ngIf="rep.label">{{ rep.label }}</span> <span *ngIf="!rep.label"><app-nano-account-id [accountID]="rep.id" middle="on"></app-nano-account-id></span>
                   </div>
                   <div class="uk-width-1-4">
-                    {{ rep.delegatedWeight | bdm: 'mbadem' }}
+                    {{ rep.delegatedWeight | ceviz: 'mceviz' }}
                   </div>
 
                 </div>
@@ -77,13 +77,13 @@
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
                     <option [value]="null">Select Accounts to Change</option>
                     <option [value]="'all'">All Current Accounts</option>
-                    <option *ngFor="let account of wallet.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | bdm: settings.settings.displayDenomination }})</option>
+                    <option *ngFor="let account of wallet.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | ceviz: settings.settings.displayDenomination }})</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
-                          <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
+                          <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span>
                           <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id></span>
                           <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
                         </div>

@@ -121,7 +121,7 @@ export class RepresentativeService {
     const onlineReps = await this.getOnlineRepresentatives();
     const quorum = await this.api.confirmationQuorum();
 
-    const online_stake_total = quorum ? this.util.badem.rawToMbadem(quorum.online_stake_total) : null;
+    const online_stake_total = quorum ? this.util.ceviz.rawToMceviz(quorum.online_stake_total) : null;
     this.onlineStakeTotal = online_stake_total ? new BigNumber(online_stake_total) : null;
 
     const allReps = [];
@@ -132,7 +132,7 @@ export class RepresentativeService {
       const knownRep = this.getRepresentative(representative.account);
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
-      const nanoWeight = this.util.badem.rawToMbadem(representative.weight || 0);
+      const nanoWeight = this.util.ceviz.rawToMceviz(representative.weight || 0);
       const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
 
       const repStatus: RepresentativeStatus = {
@@ -349,8 +349,8 @@ export class RepresentativeService {
     const list = JSON.parse(representativeStore);
 
     const newRepList = list.map(entry => {
-      if (entry.id.indexOf('bdm_') !== -1) {
-        entry.id = entry.id.replace('bdm_', 'bdm_');
+      if (entry.id.indexOf('ceviz_') !== -1) {
+        entry.id = entry.id.replace('ceviz_', 'ceviz_');
       }
       return entry;
     });
@@ -426,23 +426,23 @@ export class RepresentativeService {
   // tslint:disable-next-line:member-ordering
   defaultRepresentatives = [
     {
-      id: 'bdm_18tonkzx77watkfesbt633smd3t6of77hy7fbbwabnh64h9ect9k889s9ice',
-      name: 'Badem Representative #1',
+      id: 'ceviz_35egxpp7bh6384grkhto87sn99p1ax3o1mem4mb5yun6ddqagei3xin7s8hp',
+      name: 'Ceviz Representative #1',
       warn: true,
     },
     {
-      id: 'bdm_38regm4qcthdwm9w5urp7o6cy6tj5cp14ekjhoptocp74nxinsd9bdhe3adu',
-      name: 'Badem Representative #2',
+      id: 'ceviz_3mh5qkrwhf9p6ppk5ci5yyoq9t5jhnfy4mm9fkwxeda9noxjc73imwb5bzhm',
+      name: 'Ceviz Representative #2',
       warn: true,
     },
     {
-      id: 'bdm_3uuw7nzrnbp5d86ze4pefky1efq736kr94dbt4bnfszpwrxs7c7rezwqystt',
-      name: 'Badem Representative #3',
+      id: 'ceviz_385hcwzmm5dn5nrmu1opayeeqrgwihh3k3tezpgc91keac6bf76wmp8sqrd1',
+      name: 'Ceviz Representative #3',
       warn: true,
     },
     {
-      id: 'bdm_14mmatdj4rhqukt9ityymbaqdkiz5smww7uinkt4hw1rzknqepi496hr4zdf',
-      name: 'Badem Representative #4',
+      id: 'ceviz_3gbpjit54j98kad1hqmg6w4eeroqyayi7cb6nkthhy6u9bgczy784psmk9ky',
+      name: 'Ceviz Representative #4',
       warn: true,
     },
   ];
