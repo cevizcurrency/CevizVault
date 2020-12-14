@@ -305,9 +305,9 @@ function isValidAmount(val: string) {
 
 function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
-    throw new Error(`Invalid Mikron Account`);
+    throw new Error(`Invalid BADEM amount for the BADEM account`);
   }
-  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
+  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(6, 66);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
   if (!isValid) throw new Error(`Invalid CEVİZ account`);
 
