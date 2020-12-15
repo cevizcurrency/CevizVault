@@ -55,7 +55,7 @@ export class AppSettingsService {
     },
     {
       name: 'Ceviz API 1',
-      value: 'ceviz',
+      value: 'ceviz-api-1',
       api: 'https://ceviz-api.badem.io/proxy',
       ws: 'wss://ceviz-ws.badem.io',
       auth: null,
@@ -63,7 +63,7 @@ export class AppSettingsService {
     },
     {
       name: 'Ceviz API 2',
-      value: 'ceviz',
+      value: 'ceviz-api-2',
       api: 'https://ceviz-api-2.badem.io/proxy',
       ws: 'wss://ceviz-ws-2.badem.io',
       auth: null,
@@ -71,7 +71,7 @@ export class AppSettingsService {
     },
     {
       name: 'Ceviz API 3',
-      value: 'ceviz',
+      value: 'ceviz-api-3',
       api: 'https://ceviz-api-3.badem.io/proxy',
       ws: 'wss://ceviz-ws-3.badem.io',
       auth: null,
