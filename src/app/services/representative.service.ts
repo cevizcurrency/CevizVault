@@ -4,7 +4,6 @@ import {BaseApiAccount, WalletApiAccount, WalletService} from './wallet.service'
 import BigNumber from 'bignumber.js';
 import {ApiService} from './api.service';
 import {UtilService} from './util.service';
-import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
@@ -71,8 +70,7 @@ export class RepresentativeService {
   constructor(
     private wallet: WalletService,
     private api: ApiService,
-    private util: UtilService,
-    private ninja: NinjaService
+    private util: UtilService
   ) {
     this.representatives = this.defaultRepresentatives;
   }
@@ -130,7 +128,6 @@ export class RepresentativeService {
     for (const representative of representatives) {
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
-      const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.ceviz.rawToMceviz(representative.weight || 0);
       const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
@@ -179,63 +176,6 @@ export class RepresentativeService {
           repStatus.warn = true;
           repStatus.changeRequired = true;
         }
-      } else if (knownRepNinja) {
-        status = status === 'none' ? 'ok' : status;
-        label = knownRepNinja.alias;
-      }
-
-      if (knownRepNinja && !repStatus.trusted) {
-        let uptimeIntervalValue = knownRepNinja.uptime_over.week;
-        const uptimeIntervalDays = 7;
-
-        // temporary fix for knownRepNinja.uptime_over.week always returning 0
-        // uptimeIntervalValue = knownRepNinja.uptime_over.month;
-        // uptimeIntervalDays = 30;
-        // /temporary fix
-
-        // consider uptime value at least 1/<interval days> of daily uptime
-        uptimeIntervalValue = Math.max(
-          uptimeIntervalValue,
-          (knownRepNinja.uptime_over.day / uptimeIntervalDays)
-        );
-
-        if (repOnline === true) {
-          // consider uptime value at least 1% if the rep is currently online
-          uptimeIntervalValue = Math.max(uptimeIntervalValue, 1);
-        }
-
-        repStatus.uptime = uptimeIntervalValue;
-        repStatus.score = knownRepNinja.score;
-
-        const msSinceLastVoted = knownRepNinja.lastVoted ? ( Date.now() - new Date(knownRepNinja.lastVoted).getTime() ) : 0;
-        repStatus.daysSinceLastVoted = Math.floor(msSinceLastVoted / 86400000);
-        if (uptimeIntervalValue === 0) {
-          // display a minimum of <interval days> if the uptime value is 0%
-          repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, uptimeIntervalDays);
-        }
-
-        if (uptimeIntervalValue < 50) {
-          status = 'alert';
-          repStatus.veryLowUptime = true;
-          repStatus.warn = true;
-          repStatus.changeRequired = true;
-        } else if (uptimeIntervalValue < 60) {
-          if (status !== 'alert') {
-            status = 'warn';
-          }
-          repStatus.lowUptime = true;
-          repStatus.warn = true;
-        }
-      } else if (knownRepNinja === false) {
-        // does not exist (404)
-        status = 'alert';
-        repStatus.uptime = 0;
-        repStatus.veryLowUptime = true;
-        repStatus.warn = true;
-        repStatus.changeRequired = true;
-      } else {
-        // any other api error
-        status = status === 'none' ? 'unknown' : status;
       }
 
       const additionalData = {
@@ -340,24 +280,6 @@ export class RepresentativeService {
     this.loaded = true;
 
     return list;
-  }
-
-  patchXrbPrefixData() {
-    const representativeStore = localStorage.getItem(this.storeKey);
-    if (!representativeStore) return;
-
-    const list = JSON.parse(representativeStore);
-
-    const newRepList = list.map(entry => {
-      if (entry.id.indexOf('ceviz_') !== -1) {
-        entry.id = entry.id.replace('ceviz_', 'ceviz_');
-      }
-      return entry;
-    });
-
-    localStorage.setItem(this.storeKey, JSON.stringify(newRepList));
-
-    return true;
   }
 
   getRepresentative(id): StoredRepresentative | undefined {

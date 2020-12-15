@@ -12,8 +12,6 @@ export class AccountPipe implements PipeTransform {
   }
 
   transform(value: any, args?: any): any {
-    // const val = this.util.account.setPrefix(value, this.settings.settings.displayPrefix);
-
     return value;
   }
 

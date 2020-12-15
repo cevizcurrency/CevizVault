@@ -47,7 +47,7 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Ceviz Seed', value: 'seed' },
     { name: 'Ceviz Mnemonic Phrase', value: 'mnemonic' },
     { name: 'BIP39 Mnemonic Phrase', value: 'bip39-mnemonic' },
-    { name: 'Nault Wallet File', value: 'file' },
+    { name: 'CevizVault Wallet File', value: 'file' },
     { name: 'Ledger Ceviz S / Ceviz X', value: 'ledger' },
     { name: 'Private Key', value: 'privateKey' },
     { name: 'Expanded Private Key', value: 'expandedKey' },
@@ -158,7 +158,7 @@ export class ConfigureWalletComponent implements OnInit {
 
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local Nault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Ceviz seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local CevizVault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Ceviz seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>');
       return true;
     } catch (err) {
       this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Ceviz seed and/or mnemonic`);

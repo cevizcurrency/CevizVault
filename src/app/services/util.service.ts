@@ -57,7 +57,6 @@ export class UtilService {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
-    setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidCevizAmount: isValidCevizAmount,
     isValidAmount: isValidAmount,
@@ -305,7 +304,7 @@ function isValidAmount(val: string) {
 
 function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
-    throw new Error(`Invalid BADEM amount for the BADEM account`);
+    throw new Error(`Invalid CEVİZ amount for the CEVİZ account`);
   }
   const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(6, 66);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
@@ -319,12 +318,6 @@ function getAccountPublicKey(account) {
   if (!equal_arrays(hash_uint4, uint8ToUint4(blake_hash))) throw new Error(`Incorrect checksum`);
 
   return uint4ToHex(key_uint4);
-}
-
-function setPrefix(account, prefix = 'ceviz') {
-  if (prefix === 'xrb') {
-    return account.replace('xrb_', 'nano_');
-  }
 }
 
 /**
@@ -479,7 +472,6 @@ const util = {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
-    setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidCevizAmount: isValidCevizAmount,
     isValidAmount: isValidCevizAmount,

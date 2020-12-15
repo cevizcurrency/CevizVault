@@ -12,7 +12,6 @@ import {NodeService} from '../../services/node.service';
 import {UtilService} from '../../services/util.service';
 import {BehaviorSubject} from 'rxjs';
 import {RepresentativeService} from '../../services/representative.service';
-import {NinjaService} from '../../services/ninja.service';
 import {QrModalService} from '../../services/qr-modal.service';
 
 @Component({
@@ -36,7 +35,6 @@ export class ConfigureAppComponent implements OnInit {
     private node: NodeService,
     private util: UtilService,
     private price: PriceService,
-    private ninja: NinjaService,
     private qrModalService: QrModalService) { }
   wallet = this.walletService.wallet;
 
@@ -106,7 +104,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'Best Option Available', value: 'best' },
     { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
     { name: 'Client Side - CPU', value: 'clientCPU' },
-    { name: 'Server - Nault Server', value: 'server' },
+    { name: 'Server - CevizVault Server', value: 'server' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -160,16 +158,6 @@ export class ConfigureAppComponent implements OnInit {
 
     // populate representative list
     if (!this.serverAPI) return;
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
 
     // add the localReps to the list
     const localReps = this.repService.getSortedRepresentatives();
@@ -252,21 +240,6 @@ export class ConfigureAppComponent implements OnInit {
       this.appSettings.setAppSetting('displayCurrency', newCurrency);
       this.walletService.reloadFiatBalances();
     }
-
-    // if (updatePrefixes) {
-    //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
-      // Go through accounts?
-      // this.wallet.accounts.forEach(account => {
-      //   account.id = this.util.account.setPrefix(account.id, this.selectedPrefix);
-      // });
-      // this.walletService.saveWalletExport();
-      //
-      // this.addressBook.addressBook.forEach(entry => {
-      //   entry.account = this.util.account.setPrefix(entry.account, this.selectedPrefix);
-      // });
-      // this.addressBook.saveAddressBook();
-    // }
-
   }
 
   async updateWalletSettings() {
@@ -399,12 +372,9 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     const rep = this.repService.getRepresentative(this.defaultRepresentative);
-    const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
     }
@@ -445,7 +415,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearWalletData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in CevizVault!<br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -456,7 +426,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all your data stored in Nault and reset all settings.<br>This includes all of your wallet data and address book!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all your data stored in CevizVault and reset all settings.<br>This includes all of your wallet data and address book!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -469,7 +439,7 @@ export class ConfigureAppComponent implements OnInit {
 
       this.notifications.sendSuccess(`Successfully deleted locally stored data and reset the settings!`);
 
-      // Get a new random API server or Nault will get stuck in offline mode
+      // Get a new random API server or CevizVault will get stuck in offline mode
       this.updateServerSettings();
     } catch (err) {}
   }

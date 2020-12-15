@@ -65,10 +65,6 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
-
-    // New for v19: Patch saved ceviz_ prefixes to ceviz_
-    await this.patchXrbToCevizPrefixData();
-
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
 
@@ -87,7 +83,7 @@ export class AppComponent implements OnInit {
 
     await this.walletService.reloadBalances(true);
 
-    // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
+    // Workaround fix for github pages when CevizVault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
     const path = localStorage.getItem('path');
 
@@ -168,21 +164,6 @@ export class AppComponent implements OnInit {
     } catch (err) {
       this.notifications.sendWarning(`There was an issue retrieving latest Ceviz price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
-  }
-
-  /*
-    This is important as it looks through saved data using hardcoded ceviz_ prefixes
-    (Your wallet, address book, rep list, etc) and updates them to ceviz_ prefix for v19 RPC
-   */
-  async patchXrbToCevizPrefixData() {
-    // If wallet is version 2, data has already been patched.  Otherwise, patch all data
-    if (this.settings.settings.walletVersion >= 2) return;
-
-    await this.walletService.patchOldSavedData(); // Change saved ceviz_ addresses to ceviz_
-    this.addressBook.patchXrbPrefixData();
-    this.representative.patchXrbPrefixData();
-
-    this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
   }
 
   toggleNav() {

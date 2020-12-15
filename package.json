@@ -96,7 +96,7 @@
   "build": {
     "appId": "cc.nault",
     "buildVersion": "1.6.1",
-    "productName": "Nault",
+    "productName": "CevizVault",
     "copyright": "Copyright © 2020 The Nano Community / Andrew Steele",
     "directories": {
       "output": "desktop-app/build",

@@ -12,8 +12,7 @@ import {
   NotificationService,
   RepresentativeService,
   UtilService,
-  WalletService,
-  NinjaService
+  WalletService
 } from '../../services';
 
 @Component({
@@ -59,7 +58,6 @@ export class RepresentativesComponent implements OnInit {
     private util: UtilService,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,
-    private ninja: NinjaService,
     private qrModalService: QrModalService) { }
 
   async ngOnInit() {
@@ -89,18 +87,6 @@ export class RepresentativesComponent implements OnInit {
     );
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
-
-    // populate representative list
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
 
     // add the localReps to the list
     const localReps = this.representativeService.getSortedRepresentatives();
@@ -181,13 +167,10 @@ export class RepresentativesComponent implements OnInit {
     }
 
     const rep = this.representativeService.getRepresentative(this.toRepresentativeID);
-    const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+	} else {
       this.representativeListMatch = '';
     }
   }
@@ -195,21 +178,7 @@ export class RepresentativesComponent implements OnInit {
   async loadRecommendedReps() {
     this.recommendedRepsLoading = true;
     try {
-      const scores = await this.ninja.recommended() as any[];
       const totalSupply = new BigNumber(133248289);
-
-      const reps = scores.map(rep => {
-        const nanoWeight = this.util.ceviz.rawToMceviz(rep.votingweight.toString() || 0);
-        const percent = nanoWeight.div(totalSupply).times(100);
-
-        // rep.weight = nanoWeight.toString(10);
-        rep.weight = this.util.ceviz.mcevizToRaw(nanoWeight);
-        rep.percent = percent.toFixed(3);
-
-        return rep;
-      });
-
-      this.recommendedReps = reps;
 
       this.calculatePage();
       this.recommendedRepsLoading = false;

@@ -13,7 +13,6 @@ import BigNumber from 'bignumber.js';
 import {RepresentativeService} from '../../services/representative.service';
 import {BehaviorSubject} from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
-import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
@@ -98,8 +97,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private util: UtilService,
     public settings: AppSettingsService,
     private cevizBlock: CevizBlockService,
-    private qrModalService: QrModalService,
-    private ninja: NinjaService) {
+    private qrModalService: QrModalService) {
       // to detect when the account changes if the view is already active
       route.events.subscribe((val) => {
         if (val instanceof NavigationEnd) {
@@ -129,16 +127,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     // populate representative list
     if (!this.settings.settings.serverAPI) return;
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
 
     // add the localReps to the list
     const localReps = this.repService.getSortedRepresentatives();
@@ -388,13 +376,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     const rep = this.repService.getRepresentative(this.representativeModel);
-    const ninjaRep = await this.ninja.getAccount(this.representativeModel);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+	} else {
       this.representativeListMatch = '';
     }
   }
